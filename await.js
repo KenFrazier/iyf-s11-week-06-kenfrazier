@@ -5,6 +5,7 @@ async function loadEverything() {
        const posts = await getUserPosts(user.id);
        console.log("Post:", posts);
        const comments = await getPostComments(posts[0].id);
+       console.log("Comments:", comments);
   } catch (error) {
       console.log("Error:", error);
   }
