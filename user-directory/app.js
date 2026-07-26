@@ -27,19 +27,20 @@ function displayUsers(users) {
     `).join("");
 }
 
-
+let allUsers = [];
 async function loadUsers() {
     try {
         showLoading();
-        
-        const fetchPromise = fetch("https://jsonplaceholder.typicode.com/users",);
-        
-             if (!response.ok) {
-               throw new Error(`HTTP error: ${response.status}`);
-             }
-             const users = await response.json();
-             displayUsers(users);
-   
+
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        allUsers = await response.json();
+        displayUsers(users);
+
     } catch (error) {
         showError(error.message);
     } finally {
@@ -47,4 +48,17 @@ async function loadUsers() {
     }
 }
 
+function setupSearch() {
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = allUsers.filter(user =>
+            user.name.toLowerCase().includes(query) ||
+            user.email.toLowerCase().includes(query)
+        );
+        displayUsers(filtered);
+    });
+}
+
 loadUsers();
+setupSearch();
