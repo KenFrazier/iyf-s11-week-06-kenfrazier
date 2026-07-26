@@ -39,7 +39,7 @@ async function loadUsers() {
         }
 
         allUsers = await response.json();
-        displayUsers(users);
+        displayUsers(allUsers);
 
     } catch (error) {
         showError(error.message);
@@ -60,5 +60,20 @@ function setupSearch() {
     });
 }
 
+function setupSort() {
+    const sortSelect = document.getElementById("sort");
+    sortSelect.addEventListener("change", (e) => {
+        const sorted = [...allUsers].sort((a, b) => {
+            if (e.target.value === "az") {
+                return a.name.localeCompare(b.name);
+            } else {
+                return b.name.localeCompare(a.name);
+            }
+        });
+        displayUsers(sorted);
+    });
+}
+
 loadUsers();
 setupSearch();
+setupSort();
